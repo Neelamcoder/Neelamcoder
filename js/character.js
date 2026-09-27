@@ -8,40 +8,40 @@
   'use strict';
 
   const DEFAULTS = {
-    name: 'Buddy',
-    skin: '#f1c27d',
-    headShape: 'round',
-    eyes: 'big',
-    eyeColor: '#3b2a1a',
-    mouth: 'smile',
+    name: 'Sakura',
+    skin: '#ffe7d6',
+    headShape: 'anime',
+    eyes: 'anime',
+    eyeColor: '#6b3fa0',
+    mouth: 'tiny',
     blush: true,
-    hair: 'short',
-    hairColor: '#4a2c17',
-    top: 'tshirt',
-    topColor: '#4f7cff',
-    pants: '#2d3a5a',
-    shoes: '#222222',
-    accessory: 'none',
+    hair: 'hime',
+    hairColor: '#27325a',
+    top: 'sailor',
+    topColor: '#ffffff',
+    pants: '#27325a',
+    shoes: '#6b4f2c',
+    accessory: 'hairclip',
     accColor: '#e8434f',
-    bg: '#dff3ff',
+    bg: '#ffe3ef',
     anim: 'idle',
     speed: 1,
   };
 
   const OPTIONS = {
-    headShape: [['round', 'Round'], ['oval', 'Oval'], ['square', 'Square']],
-    eyes: [['big', 'Big'], ['dots', 'Dots'], ['happy', 'Happy'], ['sleepy', 'Sleepy'], ['wink', 'Wink']],
-    mouth: [['smile', 'Smile'], ['grin', 'Grin'], ['o', 'Surprised'], ['flat', 'Neutral'], ['smirk', 'Smirk']],
-    hair: [['none', 'Bald'], ['short', 'Short'], ['spiky', 'Spiky'], ['long', 'Long'], ['bun', 'Bun'], ['curly', 'Curly'], ['mohawk', 'Mohawk']],
-    top: [['tshirt', 'T-shirt'], ['stripes', 'Stripes'], ['hoodie', 'Hoodie'], ['star', 'Star tee'], ['overalls', 'Overalls'], ['dress', 'Dress']],
-    accessory: [['none', 'None'], ['glasses', 'Glasses'], ['tophat', 'Top hat'], ['party', 'Party hat'], ['bow', 'Bow'], ['headphones', 'Headphones'], ['crown', 'Crown']],
+    headShape: [['anime', 'Anime'], ['round', 'Round'], ['oval', 'Oval'], ['square', 'Square']],
+    eyes: [['anime', 'Anime'], ['sparkle', 'Sparkle'], ['sharp', 'Cool'], ['big', 'Big'], ['dots', 'Dots'], ['happy', 'Happy'], ['sleepy', 'Sleepy'], ['wink', 'Wink']],
+    mouth: [['tiny', 'Tiny'], ['cat', 'Cat :3'], ['shout', 'Shout'], ['smile', 'Smile'], ['grin', 'Grin'], ['o', 'Surprised'], ['flat', 'Neutral'], ['smirk', 'Smirk']],
+    hair: [['shonen', 'Hero spikes'], ['twintails', 'Twin tails'], ['hime', 'Hime cut'], ['ponytail', 'Ponytail'], ['bob', 'Bob'], ['none', 'Bald'], ['short', 'Short'], ['spiky', 'Spiky'], ['long', 'Long'], ['bun', 'Bun'], ['curly', 'Curly'], ['mohawk', 'Mohawk']],
+    top: [['sailor', 'Sailor'], ['blazer', 'Blazer'], ['ninja', 'Ninja'], ['magical', 'Magical'], ['tshirt', 'T-shirt'], ['stripes', 'Stripes'], ['hoodie', 'Hoodie'], ['star', 'Star tee'], ['overalls', 'Overalls'], ['dress', 'Dress']],
+    accessory: [['none', 'None'], ['catears', 'Cat ears'], ['headband', 'Ninja band'], ['hairclip', 'Hair clip'], ['glasses', 'Glasses'], ['tophat', 'Top hat'], ['party', 'Party hat'], ['bow', 'Bow'], ['headphones', 'Headphones'], ['crown', 'Crown']],
     anim: [['idle', 'Idle'], ['wave', 'Wave'], ['jump', 'Jump'], ['dance', 'Dance'], ['walk', 'Walk'], ['talk', 'Talk'], ['spin', 'Spin'], ['none', 'Still']],
   };
 
   const PALETTES = {
-    skin: ['#ffdbac', '#f1c27d', '#e0ac69', '#c68642', '#8d5524', '#5c3a21', '#a8e6a1', '#b8c8ff'],
-    eyeColor: ['#3b2a1a', '#1f4e8c', '#2f7d32', '#6b3fa0', '#111111'],
-    hairColor: ['#111111', '#4a2c17', '#a0522d', '#e6be8a', '#d94f30', '#f7f7f7', '#ff6fb5', '#5b8cff'],
+    skin: ['#ffe7d6', '#ffdbac', '#f1c27d', '#e0ac69', '#c68642', '#8d5524', '#5c3a21', '#a8e6a1', '#b8c8ff'],
+    eyeColor: ['#3b2a1a', '#1f4e8c', '#2f7d32', '#6b3fa0', '#d6336c', '#c0392b', '#e0a800', '#1aa3a3', '#111111'],
+    hairColor: ['#111111', '#27325a', '#4a2c17', '#a0522d', '#e6be8a', '#ff8a2a', '#d94f30', '#f7f7f7', '#c9d1e0', '#ff9ecb', '#b39ddb', '#4fd1c5', '#5b8cff'],
     topColor: ['#4f7cff', '#e8434f', '#2ec27e', '#f5c542', '#9b59f6', '#ff8c42', '#ffffff', '#333333'],
     pants: ['#2d3a5a', '#4a4a4a', '#6b4f2c', '#1f6f5c', '#8a2f4f', '#c9c2b0'],
     shoes: ['#222222', '#ffffff', '#e8434f', '#6b4f2c', '#4f7cff'],
@@ -51,6 +51,7 @@
 
   // Head geometry per shape: half-width, top y, bottom y.
   const HEADS = {
+    anime: { hw: 43, top: 36, bottom: 128 },
     round: { hw: 45, top: 35, bottom: 125 },
     oval: { hw: 40, top: 30, bottom: 130 },
     square: { hw: 45, top: 38, bottom: 126 },
@@ -162,13 +163,58 @@
   function headShapeSvg(shape, fill, stroke) {
     const common = `fill="${fill}" stroke="${stroke}" stroke-width="2"`;
     if (shape === 'oval') return `<ellipse cx="100" cy="80" rx="40" ry="50" ${common}/>`;
+    if (shape === 'anime') return `<path d="M57 78 Q57 36 100 36 Q143 36 143 78 Q143 100 126 115 Q110 128 100 128 Q90 128 74 115 Q57 100 57 78Z" ${common}/>`;
     if (shape === 'square') return `<rect x="55" y="38" width="90" height="88" rx="24" ${common}/>`;
     return `<circle cx="100" cy="80" r="45" ${common}/>`;
+  }
+
+  // Anime eye: tall iris, glow, big highlight and a thick upper lash that
+  // flicks out at the outer corner. m = -1 for the left eye, 1 for the right.
+  function animeEye(cx, m, color, sparkle) {
+    const o = cx + 12 * m, i = cx - 11 * m;
+    const hl = sparkle
+      ? `<path d="M${cx - 3} 77 l1.6 3.6 3.6 1.6 -3.6 1.6 -1.6 3.6 -1.6 -3.6 -3.6 -1.6 3.6 -1.6Z" fill="#fff"/>`
+      : `<ellipse cx="${cx - 3}" cy="81" rx="3.2" ry="4" fill="#fff"/>`;
+    return `<path d="M${i} 81 Q${cx} 74 ${o} 80 Q${o} 94 ${cx} 97 Q${i} 94 ${i} 81Z" fill="#fff"/>` +
+      `<ellipse cx="${cx}" cy="87" rx="8" ry="10.5" fill="${color}"/>` +
+      `<ellipse cx="${cx}" cy="91" rx="6" ry="5.5" fill="${shade(color, 0.45)}" opacity=".85"/>` +
+      `<ellipse cx="${cx}" cy="86" rx="3.6" ry="5.2" fill="#111"/>` +
+      hl +
+      `<circle cx="${cx + 3.5}" cy="92" r="1.6" fill="#fff"/>` +
+      (sparkle ? `<circle cx="${cx + 4}" cy="80" r="1.2" fill="#fff"/>` : '') +
+      `<path d="M${i} 80 Q${cx} 71 ${o} 78 L${o + 4 * m} 75" fill="none" stroke="#1d1d1f" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `<path d="M${cx - 5} 98 L${cx + 5} 98" stroke="#1d1d1f" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>`;
+  }
+
+  function sharpEye(cx, m, color) {
+    const o = cx + 12 * m, i = cx - 11 * m;
+    return `<path d="M${i} 84 L${o} 80 Q${o} 92 ${cx} 93 Q${i} 92 ${i} 84Z" fill="#fff"/>` +
+      `<circle cx="${cx}" cy="87" r="6" fill="${color}"/>` +
+      `<circle cx="${cx}" cy="87" r="2.8" fill="#111"/>` +
+      `<circle cx="${cx - 2}" cy="85" r="1.6" fill="#fff"/>` +
+      `<path d="M${i} 84 L${o} 79 L${o + 3 * m} 77" fill="none" stroke="#1d1d1f" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }
+
+  const ANIME_EYES = ['anime', 'sparkle', 'sharp'];
+
+  function browsSvg(s) {
+    if (!ANIME_EYES.includes(s.eyes)) return '';
+    const c = shade(s.hairColor, -0.35);
+    const d = s.eyes === 'sharp'
+      ? 'M73 71 L92 75 M127 71 L108 75'
+      : 'M75 70 Q83 66 91 69 M125 70 Q117 66 109 69';
+    return `<path d="${d}" fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/>`;
   }
 
   function eyesSvg(style, color) {
     const ink = '#1d1d1f';
     switch (style) {
+      case 'anime':
+        return animeEye(83, -1, color, false) + animeEye(117, 1, color, false);
+      case 'sparkle':
+        return animeEye(83, -1, color, true) + animeEye(117, 1, color, true);
+      case 'sharp':
+        return sharpEye(83, -1, color) + sharpEye(117, 1, color);
       case 'dots':
         return `<circle cx="83" cy="82" r="5" fill="${ink}"/><circle cx="117" cy="82" r="5" fill="${ink}"/>`;
       case 'happy':
@@ -193,6 +239,13 @@
   function mouthSvg(style) {
     const ink = '#1d1d1f';
     switch (style) {
+      case 'tiny':
+        return `<path d="M95 108 Q100 112 105 108" fill="none" stroke="${ink}" stroke-width="2.4" stroke-linecap="round"/>`;
+      case 'cat':
+        return `<path d="M91 106 Q95.5 111 100 106 Q104.5 111 109 106" fill="none" stroke="${ink}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`;
+      case 'shout':
+        return `<path d="M92 104 Q100 102 108 104 Q105 117 100 117 Q95 117 92 104Z" fill="#7a1f2b" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/>` +
+          `<path d="M95 113 Q100 109 105 113 Q100 117 95 113Z" fill="#ff7a8a"/>`;
       case 'grin':
         return `<path d="M86 101 Q100 124 114 101 Z" fill="${ink}"/><path d="M92 112 Q100 106 108 112 Q100 118 92 112Z" fill="#ff7a8a"/>`;
       case 'o':
@@ -237,6 +290,30 @@
         return [`<circle cx="100" cy="26" r="18" ${attrs}/>`, shortCap];
       case 'curly':
         return [curlyCircles(dark), curlyCircles(color)];
+      case 'shonen':
+        return ['', `<path d="M48 92 L38 62 L55 66 L46 36 L68 44 L68 14 L88 32 L102 4 L114 30 L134 12 L136 42 L158 34 L148 64 L164 66 L152 94 Q148 66 130 58 L124 74 L113 56 L101 76 L90 56 L79 74 L72 58 Q54 68 48 92Z" ${attrs}/>`];
+      case 'twintails':
+        return [
+          `<path d="M62 50 Q18 66 24 150 Q30 182 48 166 Q38 116 70 70Z" ${attrs}/><path d="M138 50 Q182 66 176 150 Q170 182 152 166 Q162 116 130 70Z" ${attrs}/>`,
+          `<path d="M53 90 Q48 28 100 28 Q152 28 147 90 Q144 66 134 58 Q124 72 114 58 Q104 72 96 58 Q84 72 74 58 Q62 66 53 90Z" ${attrs}/>` +
+          `<circle cx="60" cy="52" r="6" fill="${dark}"/><circle cx="140" cy="52" r="6" fill="${dark}"/>`,
+        ];
+      case 'hime':
+        return [
+          `<path d="M50 84 Q46 26 100 26 Q154 26 150 84 L154 178 L126 178 L126 100 L74 100 L74 178 L46 178Z" ${attrs}/>`,
+          `<path d="M53 116 L53 66 Q50 28 100 28 Q150 28 147 66 L147 116 L137 116 L136 66 L64 66 L63 116Z" ${attrs}/>`,
+        ];
+      case 'ponytail':
+        return [
+          `<path d="M118 36 Q176 34 168 112 Q164 146 142 158 Q154 112 130 70Z" ${attrs}/>`,
+          `<path d="M53 88 Q48 28 100 28 Q152 28 147 88 Q143 60 126 50 Q104 74 72 60 Q58 68 53 88Z" ${attrs}/><circle cx="126" cy="40" r="6" fill="${dark}"/>`,
+        ];
+      case 'bob':
+        return [
+          `<path d="M50 84 Q46 28 100 28 Q154 28 150 84 L154 120 Q140 128 130 118 L130 92 L70 92 L70 118 Q60 128 46 120Z" ${attrs}/>`,
+          `<path d="M53 96 Q48 28 100 28 Q152 28 147 96 Q142 64 128 54 Q112 76 84 64 Q66 62 53 96Z" ${attrs}/>` +
+          `<path d="M100 30 Q94 14 106 8 Q100 18 108 24" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round"/>`,
+        ];
       case 'mohawk':
         return ['', `<path d="M86 60 L84 30 L94 36 L96 8 L104 30 L110 12 L114 36 L118 32 L114 60 Q100 54 86 60Z" ${attrs}/>`];
       default:
@@ -244,9 +321,22 @@
     }
   }
 
-  function accessorySvg(style, color) {
+  function accessorySvg(style, color, hairColor) {
     const dark = shade(color, -0.3);
     switch (style) {
+      case 'catears': {
+        const hd = shade(hairColor, -0.25);
+        return `<path d="M58 54 L56 8 L90 36Z M142 54 L144 8 L110 36Z" fill="${hairColor}" stroke="${hd}" stroke-width="2" stroke-linejoin="round"/>` +
+          `<path d="M63 44 L62 20 L81 36Z M137 44 L138 20 L119 36Z" fill="#ffb3c7"/>`;
+      }
+      case 'headband':
+        return `<path d="M148 60 Q166 58 176 72 M148 64 Q162 72 168 88" fill="none" stroke="${color}" stroke-width="6" stroke-linecap="round"/>` +
+          `<path d="M52 56 Q100 46 148 56 L148 67 Q100 57 52 67Z" fill="${color}" stroke="${dark}" stroke-width="2" stroke-linejoin="round"/>` +
+          `<rect x="82" y="49" width="36" height="16" rx="3" fill="#c9d1e0" stroke="#7a8599" stroke-width="2"/>` +
+          `<path d="M100 57 m-4 0 a4 4 0 1 1 4 4" fill="none" stroke="#4a5263" stroke-width="1.8" stroke-linecap="round"/>`;
+      case 'hairclip':
+        return `<polygon points="128,34 131,42 139,42 133,47 135,55 128,50 121,55 123,47 117,42 125,42" fill="${color}" stroke="${dark}" stroke-width="1.5" stroke-linejoin="round"/>` +
+          `<path d="M112 50 L122 58" stroke="${dark}" stroke-width="2.5" stroke-linecap="round"/>`;
       case 'glasses':
         return `<g fill="rgba(255,255,255,.25)" stroke="${color}" stroke-width="3"><circle cx="83" cy="82" r="13"/><circle cx="117" cy="82" r="13"/></g>` +
           `<path d="M96 81 Q100 77 104 81 M70 80 L56 77 M130 80 L144 77" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round"/>`;
@@ -303,6 +393,38 @@
           `<circle cx="86" cy="156" r="3" fill="#f5c542"/><circle cx="114" cy="156" r="3" fill="#f5c542"/>` +
           `<rect x="92" y="164" width="16" height="12" rx="2" fill="none" stroke="${pd}" stroke-width="2"/>`;
       }
+      case 'sailor': {
+        const collar = s.pants, cd = shade(collar, -0.25);
+        return base +
+          `<path d="M76 128 L100 160 L124 128 L131 146 L100 170 L69 146Z" fill="${collar}" stroke="${cd}" stroke-width="2" stroke-linejoin="round"/>` +
+          `<path d="M72 144 L100 166 L128 144" fill="none" stroke="#fff" stroke-width="2"/>` +
+          `<path d="M100 160 L90 182 L100 176 L110 182Z" fill="${s.accColor}" stroke="${shade(s.accColor, -0.3)}" stroke-width="1.5" stroke-linejoin="round"/>` +
+          pleatedSkirt(collar);
+      }
+      case 'blazer': {
+        const tie = s.accColor;
+        return base +
+          `<path d="M90 126 L100 142 L110 126Z" fill="#fff"/>` +
+          `<path d="M100 134 L96 142 L100 176 L104 142Z" fill="${tie}" stroke="${shade(tie, -0.3)}" stroke-width="1.5" stroke-linejoin="round"/>` +
+          `<path d="M88 126 L100 160 L92 200 M112 126 L100 160" fill="none" stroke="${dark}" stroke-width="2"/>` +
+          `<path d="M88 126 L98 150 L86 146Z M112 126 L102 150 L114 146Z" fill="${shade(c, -0.12)}" stroke="${dark}" stroke-width="1.5" stroke-linejoin="round"/>` +
+          `<circle cx="96" cy="172" r="2.5" fill="#f5c542"/><circle cx="96" cy="186" r="2.5" fill="#f5c542"/>` +
+          `<rect x="112" y="150" width="12" height="3" fill="${dark}"/>`;
+      }
+      case 'ninja':
+        return base +
+          `<path d="M86 126 L110 178 M114 126 L104 150" fill="none" stroke="${dark}" stroke-width="3" stroke-linecap="round"/>` +
+          `<path d="M86 126 L98 152 L94 126Z" fill="${s.pants}"/>` +
+          `<rect x="69" y="178" width="62" height="10" fill="${s.accColor}" stroke="${shade(s.accColor, -0.3)}" stroke-width="2"/>` +
+          `<path d="M116 186 L122 200 M120 186 L130 198" stroke="${s.accColor}" stroke-width="4" stroke-linecap="round"/>`;
+      case 'magical':
+        return base +
+          `<path d="M62 190 L138 190 L152 226 Q100 238 48 226Z" fill="${c}" stroke="${dark}" stroke-width="2" stroke-linejoin="round"/>` +
+          `<path d="M50 224 Q57 234 64 227 Q71 236 78 228 Q85 236 92 229 Q100 237 108 229 Q115 236 122 228 Q129 236 136 227 Q143 234 150 224" fill="none" stroke="#fff" stroke-width="3"/>` +
+          `<path d="M70 190 L130 190" stroke="${s.accColor}" stroke-width="5"/>` +
+          `<path d="M100 146 L80 134 L80 158Z M100 146 L120 134 L120 158Z" fill="${s.accColor}" stroke="${shade(s.accColor, -0.3)}" stroke-width="2" stroke-linejoin="round"/>` +
+          `<circle cx="100" cy="146" r="5.5" fill="#f5c542" stroke="#b8860b" stroke-width="1.5"/>` +
+          `<path d="M72 132 Q66 124 60 132 Q66 140 72 136 M128 132 Q134 124 140 132 Q134 140 128 136" fill="#fff" stroke="${dark}" stroke-width="1.5"/>`;
       case 'dress':
         return base +
           `<path d="M70 188 L130 188 L146 232 Q100 242 54 232Z" fill="${c}" stroke="${dark}" stroke-width="2" stroke-linejoin="round"/>` +
@@ -311,6 +433,15 @@
         return base + `<path d="M88 126 Q100 138 112 126" fill="none" stroke="${dark}" stroke-width="2"/>`;
     }
   }
+
+  function pleatedSkirt(color) {
+    const d = shade(color, -0.25);
+    return `<path d="M68 188 L132 188 L146 226 L54 226Z" fill="${color}" stroke="${d}" stroke-width="2" stroke-linejoin="round"/>` +
+      `<path d="M84 188 L78 226 M100 188 L100 226 M116 188 L122 226" stroke="${d}" stroke-width="1.5"/>`;
+  }
+
+  // Tops that come with a skirt show bare legs instead of pants.
+  const SKIRTS = ['dress', 'sailor', 'magical'];
 
   function armSvg(side, s) {
     const m = side === 'L' ? -1 : 1;
@@ -325,12 +456,16 @@
   function legSvg(side, s) {
     const m = side === 'L' ? -1 : 1;
     const x = 100 + 12 * m, fx = 100 + 16 * m;
-    const legColor = s.top === 'dress' ? s.skin : s.pants;
-    const w = s.top === 'dress' ? 12 : 18;
+    const skirt = SKIRTS.includes(s.top);
+    const legColor = skirt ? s.skin : s.pants;
+    const w = skirt ? 12 : 18;
     return `<line x1="${x}" y1="200" x2="${x}" y2="256" stroke="${shade(legColor, -0.25)}" stroke-width="${w + 4}" stroke-linecap="round"/>` +
       `<line x1="${x}" y1="200" x2="${x}" y2="256" stroke="${legColor}" stroke-width="${w}" stroke-linecap="round"/>` +
       `<ellipse cx="${fx}" cy="263" rx="15" ry="8" fill="${s.shoes}" stroke="${shade(s.shoes, s.shoes === '#222222' ? 0.3 : -0.3)}" stroke-width="2"/>`;
   }
+
+  // Hairstyles whose side locks cover the ears.
+  const HIDES_EARS = ['hime', 'bob'];
 
   let uidCounter = 0;
 
@@ -354,7 +489,7 @@
     const fit = `transform="translate(100 ${dy}) scale(${fx} 1) translate(-100 0)"`;
     const [hairBack, hairFront] = hairSvg(s.hair, s.hairColor);
 
-    const pantsTop = s.top === 'dress' ? '' :
+    const pantsTop = SKIRTS.includes(s.top) ? '' :
       `<rect x="70" y="190" width="60" height="24" rx="6" fill="${s.pants}" stroke="${shade(s.pants, -0.25)}" stroke-width="2"/>`;
 
     const svg =
@@ -372,13 +507,17 @@
           topSvg(s, uid) +
           `<g class="ac-head">` +
             `<g ${fit}>${hairBack}</g>` +
-            `<circle cx="${100 - head.hw}" cy="86" r="9" fill="${s.skin}" stroke="${skinDark}" stroke-width="2"/>` +
-            `<circle cx="${100 + head.hw}" cy="86" r="9" fill="${s.skin}" stroke="${skinDark}" stroke-width="2"/>` +
+            (HIDES_EARS.includes(s.hair) ? '' :
+              `<circle cx="${100 - head.hw}" cy="86" r="9" fill="${s.skin}" stroke="${skinDark}" stroke-width="2"/>` +
+              `<circle cx="${100 + head.hw}" cy="86" r="9" fill="${s.skin}" stroke="${skinDark}" stroke-width="2"/>`) +
             headShapeSvg(s.headShape, s.skin, skinDark) +
-            (s.blush ? `<ellipse cx="74" cy="99" rx="8" ry="5" fill="#ff7a8a" opacity=".45"/><ellipse cx="126" cy="99" rx="8" ry="5" fill="#ff7a8a" opacity=".45"/>` : '') +
+            (s.blush ? `<ellipse cx="74" cy="101" rx="8" ry="5" fill="#ff7a8a" opacity=".45"/><ellipse cx="126" cy="101" rx="8" ry="5" fill="#ff7a8a" opacity=".45"/>` : '') +
+            (s.blush && s.headShape === 'anime' ? `<path d="M69 103 L72 98 M74 103 L77 98 M79 103 L82 98 M118 103 L121 98 M123 103 L126 98 M128 103 L131 98" stroke="#e8566b" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>` : '') +
+            (s.headShape === 'anime' ? `<path d="M100 97 L98.5 101" stroke="${skinDark}" stroke-width="1.8" stroke-linecap="round"/>` : '') +
+            browsSvg(s) +
             `<g class="ac-eyes">${eyesSvg(s.eyes, s.eyeColor)}</g>` +
             `<g class="ac-mouth">${mouthSvg(s.mouth)}</g>` +
-            `<g ${fit}>${hairFront}${accessorySvg(s.accessory, s.accColor)}</g>` +
+            `<g ${fit}>${hairFront}${accessorySvg(s.accessory, s.accColor, s.hairColor)}</g>` +
           `</g>` +
           `<g class="ac-armL">${armSvg('L', s)}</g>` +
           `<g class="ac-armR">${armSvg('R', s)}</g>` +
@@ -387,6 +526,37 @@
       `</svg>`;
     return svg;
   }
+
+  // Ready-made anime looks. Anything not listed falls back to DEFAULTS.
+  const PRESETS = [
+    { name: 'Sakura', label: 'School girl' },
+    { name: 'Kaito', label: 'Ninja hero', skin: '#ffdbac', eyes: 'sharp', eyeColor: '#1f4e8c', mouth: 'smile', blush: false,
+      hair: 'shonen', hairColor: '#ff8a2a', top: 'ninja', topColor: '#ff8c42', pants: '#27325a', shoes: '#27325a',
+      accessory: 'headband', accColor: '#27325a', bg: '#fff4d6' },
+    { name: 'Luna', label: 'Magical girl', eyes: 'sparkle', eyeColor: '#d6336c', mouth: 'smile', hair: 'twintails',
+      hairColor: '#ff9ecb', top: 'magical', topColor: '#ffb3d9', shoes: '#ffffff', accessory: 'hairclip',
+      accColor: '#f5c542', bg: '#ece6ff' },
+    { name: 'Mochi', label: 'Cat girl', eyes: 'anime', eyeColor: '#e0a800', mouth: 'cat', hair: 'bob', hairColor: '#b39ddb',
+      top: 'hoodie', topColor: '#ffb3c7', pants: '#4a4a4a', shoes: '#ffffff', accessory: 'catears', accColor: '#e8434f',
+      bg: '#fff4d6' },
+    { name: 'Ren', label: 'Cool senpai', skin: '#ffdbac', eyes: 'sharp', eyeColor: '#c0392b', mouth: 'smirk', blush: false,
+      hair: 'ponytail', hairColor: '#111111', top: 'blazer', topColor: '#27325a', pants: '#4a4a4a', shoes: '#222222',
+      accessory: 'none', accColor: '#c0392b', bg: '#dff3ff' },
+    { name: 'Yuki', label: 'Snow spirit', skin: '#ffe7d6', eyes: 'sparkle', eyeColor: '#1aa3a3', mouth: 'tiny',
+      hair: 'hime', hairColor: '#c9d1e0', top: 'magical', topColor: '#bfe6ff', shoes: '#ffffff', accessory: 'crown',
+      accColor: '#5b8cff', bg: '#1e2233' },
+  ].map((p) => Object.assign({}, DEFAULTS, p));
+
+  // Options that belong to the anime style, used by randomAnime().
+  const ANIME = {
+    headShape: ['anime'],
+    eyes: ['anime', 'sparkle', 'sharp'],
+    mouth: ['tiny', 'cat', 'shout', 'smile', 'smirk'],
+    hair: ['shonen', 'twintails', 'hime', 'ponytail', 'bob'],
+    top: ['sailor', 'blazer', 'ninja', 'magical', 'hoodie', 'tshirt'],
+    accessory: ['none', 'catears', 'headband', 'hairclip', 'headphones', 'glasses'],
+    skin: ['#ffe7d6', '#ffdbac', '#f1c27d', '#e0ac69'],
+  };
 
   function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
@@ -402,5 +572,12 @@
     return s;
   }
 
-  global.AnimChar = { DEFAULTS, OPTIONS, PALETTES, CHARACTER_CSS, render, sanitize, randomState, shade };
+  function randomAnime(base) {
+    const s = randomState(base);
+    for (const key of Object.keys(ANIME)) s[key] = pick(ANIME[key]);
+    s.blush = Math.random() < 0.8;
+    return s;
+  }
+
+  global.AnimChar = { DEFAULTS, OPTIONS, PALETTES, CHARACTER_CSS, PRESETS, render, sanitize, randomState, randomAnime, shade };
 })(typeof window !== 'undefined' ? window : globalThis);

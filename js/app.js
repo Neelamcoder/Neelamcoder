@@ -1,13 +1,16 @@
 (function () {
   'use strict';
 
-  const { DEFAULTS, OPTIONS, PALETTES, CHARACTER_CSS, render, sanitize, randomState } = window.AnimChar;
+  const { DEFAULTS, OPTIONS, PALETTES, PRESETS, CHARACTER_CSS, render, sanitize, randomState, randomAnime } = window.AnimChar;
 
   const STORAGE_CURRENT = 'charstudio.current';
   const STORAGE_GALLERY = 'charstudio.gallery';
 
   // Which controls appear on each tab.
   const TABS = [
+    { id: 'presets', label: 'Presets', items: [
+      { type: 'presets', label: 'Anime characters — pick one, then customize' },
+    ] },
     { id: 'body', label: 'Body', items: [
       { key: 'skin', type: 'color', label: 'Skin tone' },
       { key: 'headShape', type: 'choice', label: 'Head shape' },
@@ -73,7 +76,7 @@
 
   let state = sanitize(load(STORAGE_CURRENT, DEFAULTS));
   let gallery = (load(STORAGE_GALLERY, []) || []).filter((g) => g && g.id).map((g) => ({ id: String(g.id), state: sanitize(g.state) }));
-  let activeTab = 'body';
+  let activeTab = 'presets';
 
   // Inject the shared animation CSS once so on-page SVGs animate.
   document.head.append(el('style', { textContent: CHARACTER_CSS }));
@@ -116,6 +119,7 @@
       if (item.type === 'choice') field.append(choiceControl(item.key));
       if (item.type === 'color') field.append(colorControl(item.key));
       if (item.type === 'toggle') field.append(toggleControl(item.key));
+      if (item.type === 'presets') field.append(presetsControl());
       panel.append(field);
     });
     syncControls();
@@ -130,6 +134,23 @@
       btn.setAttribute('role', 'radio');
       btn.innerHTML = `<span class="choice-art">${previewSvg(key, value)}</span><span class="choice-label"></span>`;
       btn.querySelector('.choice-label').textContent = label;
+      wrap.append(btn);
+    });
+    return wrap;
+  }
+
+  function presetsControl() {
+    const wrap = el('div', { className: 'presets' });
+    PRESETS.forEach((preset) => {
+      const btn = el('button', {
+        className: 'preset',
+        type: 'button',
+        onclick: () => { setState(Object.assign({}, preset, { anim: state.anim, speed: state.speed })); toast(`Hi, I'm ${preset.name}!`); },
+      });
+      btn.style.background = preset.bg;
+      if (preset.bg === '#1e2233') btn.classList.add('on-dark');
+      btn.innerHTML = `<span class="preset-art">${render(preset, { anim: 'none' })}</span>`;
+      btn.append(el('span', { className: 'preset-name', textContent: preset.name }), el('span', { className: 'preset-label', textContent: preset.label }));
       wrap.append(btn);
     });
     return wrap;
@@ -294,6 +315,7 @@
 
   $('#name').addEventListener('input', (e) => setState({ name: e.target.value }));
   $('#speed').addEventListener('input', (e) => setState({ speed: Number(e.target.value) }));
+  $('#btn-anime').addEventListener('click', () => setState(randomAnime({ name: state.name, anim: state.anim, speed: state.speed, bg: state.bg })));
   $('#btn-random').addEventListener('click', () => setState(randomState({ name: state.name, anim: state.anim, speed: state.speed, bg: state.bg })));
   $('#btn-save').addEventListener('click', () => {
     gallery.unshift({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), state: Object.assign({}, state) });
