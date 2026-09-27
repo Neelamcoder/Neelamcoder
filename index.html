@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Character Studio</title>
+  <meta name="description" content="Design your own animated cartoon character and export it as an animated SVG or PNG.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23f1c27d'/%3E%3Ccircle cx='35' cy='45' r='6'/%3E%3Ccircle cx='65' cy='45' r='6'/%3E%3Cpath d='M32 62 Q50 80 68 62' stroke='%23000' stroke-width='5' fill='none'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Character Studio</h1>
+    <p class="tagline">Design a character, bring it to life, take it with you.</p>
+  </header>
+
+  <main class="layout">
+    <section class="stage-card" aria-label="Preview">
+      <div class="name-row">
+        <label for="name" class="visually-hidden">Character name</label>
+        <input id="name" class="name-input" maxlength="40" autocomplete="off" spellcheck="false">
+      </div>
+      <div id="stage" class="stage"></div>
+
+      <div class="anim-bar">
+        <div id="anim-buttons" class="chips" role="radiogroup" aria-label="Animation"></div>
+        <label class="speed">
+          <span>Speed</span>
+          <input id="speed" type="range" min="0.25" max="3" step="0.25">
+          <output id="speed-out"></output>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="btn-random" class="btn">🎲 Randomize</button>
+        <button id="btn-save" class="btn btn-primary">💾 Save to gallery</button>
+        <button id="btn-svg" class="btn">⬇ Animated SVG</button>
+        <button id="btn-png" class="btn">⬇ PNG</button>
+        <button id="btn-json" class="btn">⬇ JSON</button>
+        <label class="btn file-btn">⬆ Import JSON<input id="import" type="file" accept="application/json,.json"></label>
+      </div>
+    </section>
+
+    <section class="controls-card" aria-label="Customize">
+      <nav id="tabs" class="tabs" role="tablist"></nav>
+      <div id="panel" class="panel" role="tabpanel"></div>
+    </section>
+  </main>
+
+  <section class="gallery-card" aria-label="Gallery">
+    <div class="gallery-head">
+      <h2>Your gallery</h2>
+      <span id="gallery-count" class="muted"></span>
+    </div>
+    <div id="gallery" class="gallery"></div>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/character.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
