@@ -14,7 +14,6 @@ npx serve .        # or: python3 -m http.server
 
 - **Anime presets**: start from a ready-made anime character (School girl, Ninja hero, Magical girl, Cat girl, Cool senpai, Snow spirit) and customize it, or hit **✨ Random anime**.
 - **Anime style parts**: an anime face shape, anime, sparkle and cool eyes (with brows), tiny, cat and shout mouths, hero spikes, twin tails, hime cut, ponytail and bob hair, sailor, blazer, ninja and magical-girl outfits, and cat ears, a ninja headband and a hair clip.
-
 - **Customize**: skin tone, head shape, eyes and eye color, mouth, rosy cheeks, hair style and color, outfit (T-shirt, stripes, hoodie, star tee, overalls, dress), pants, shoes, accessories (glasses, top hat, party hat, bow, headphones, crown) and background. Every color takes a preset swatch or a custom color.
 - **Animate**: idle, wave, jump, dance, walk, talk and spin, with a speed slider.
 - **Randomize** a new character with one click.
