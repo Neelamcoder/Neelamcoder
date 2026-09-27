@@ -4,11 +4,7 @@ A small browser app for designing animated cartoon characters. It uses plain HTM
 
 ## Run it
 
-Open `index.html` in a browser. You can also serve the folder:
-
-```sh
-npx serve .        # or: python3 -m http.server
-```
+Everything is in the single file `index.html`. Double-click it to open it in any browser. It works offline and needs nothing else next to it.
 
 ## What you can do
 
@@ -25,15 +21,17 @@ npx serve .        # or: python3 -m http.server
 
 ## How it works
 
-| File | Role |
+Everything lives in `index.html`, in three blocks:
+
+| Block | Role |
 | --- | --- |
-| `js/character.js` | The renderer. `AnimChar.render(state, opts)` turns a settings object into an SVG string. Each body part (head, arms, legs, eyes, mouth) is its own `<g>`, and `CHARACTER_CSS` animates them with keyframes. |
-| `js/app.js` | The UI: tabs, option pickers with live previews, gallery, import and export. |
-| `css/styles.css` | Layout and theme, with light and dark modes and a responsive layout. |
+| `<style>` | Layout and theme, with light and dark modes and a responsive layout. |
+| First `<script>` | The renderer. `AnimChar.render(state, opts)` turns a settings object into an SVG string. Each body part (head, arms, legs, eyes, mouth) is its own `<g>`, and `CHARACTER_CSS` animates them with keyframes. |
+| Second `<script>` | The UI: tabs, presets, option pickers with live previews, gallery, import and export. |
 
 The same animation CSS is embedded in exported SVGs, which is why they keep animating outside the app.
 
 ### Adding options
 
-- **Hair style, accessory, top, etc.**: add an entry to `OPTIONS` in `js/character.js`, then a matching `case` in the relevant `*Svg()` function. Hair and accessories are drawn against a round head centered at (100, 80) with radius 45, and are scaled automatically to fit the other head shapes.
+- **Hair style, accessory, top, etc.**: add an entry to `OPTIONS` in the renderer script, then a matching `case` in the relevant `*Svg()` function. Hair and accessories are drawn against a round head centered at (100, 80) with radius 45, and are scaled automatically to fit the other head shapes.
 - **Animation**: add it to `OPTIONS.anim`, then write keyframes and `.anim-<name> .ac-<part>` rules in `CHARACTER_CSS`. The animatable parts are `ac-all`, `ac-upper`, `ac-head`, `ac-armL`, `ac-armR`, `ac-legL`, `ac-legR`, `ac-eyes`, `ac-mouth` and `ac-shadow`.
