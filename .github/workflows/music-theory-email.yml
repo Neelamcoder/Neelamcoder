@@ -1,0 +1,44 @@
+name: Daily music theory email
+
+on:
+  schedule:
+    # 17:15 UTC = 10:45 PM IST. GitHub often starts scheduled jobs a few
+    # minutes late, so this aims for the email to land around 11 PM IST.
+    - cron: "15 17 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: music-theory-email
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r music-theory/requirements.txt
+
+      - name: Write and send tonight's lesson
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        run: python music-theory/send_lesson.py
+
+      - name: Save the lesson to the repo
+        run: |
+          git config user.name "music-theory-bot"
+          git config user.email "music-theory-bot@users.noreply.github.com"
+          git add music-theory/lessons
+          git diff --cached --quiet || git commit -m "Add music theory lesson for $(TZ=Asia/Kolkata date +%F)"
+          git push
